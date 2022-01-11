@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css';
-import Becks from '../../assets/people/1.jpg';
+import noAvatar from '../../assets/people/noavatar.jpg';
 export const Share = () => {
     return (
         <div className="share">
@@ -8,11 +8,11 @@ export const Share = () => {
                 <div className="shareTop">
                     <img
                         className="shareProfileImg"
-                        src={Becks}
+                        src={noAvatar}
                         alt="img"
                     ></img>
                     <input
-                        placeholder="What's in your mind Shanu?"
+                        placeholder="File your complaints "
                         className="shareInput"
                     />
                 </div>

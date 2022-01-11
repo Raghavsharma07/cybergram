@@ -1,24 +1,47 @@
 import React from 'react';
 import './index.css';
-import Becks from '../../assets/people/1.jpg';
-export const Post = () => {
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import noavatar from '../../assets/people/noavatar.jpg';
+import { format } from 'timeago.js';
+import { Link } from 'react-router-dom';
+const Post = ({ post }) => {
+    const [user, setUser] = useState({});
+    useEffect(() => {
+        const fetchUser = async () => {
+            const response = await axios.get(
+                `http://localhost:8800/api/users?userId=${post.userId}`
+            );
+            setUser(response.data);
+        };
+        fetchUser();
+    }, [post.userId]);
     return (
         <div className="post">
             <div className="postWrapper">
                 <div className="postTop">
                     <div className="postTopLeft">
-                        <img className="postProfileImg" src={Becks} alt="img" />
-                        <span className="postUsername">RAGHAV</span>
-                        <span className="postDate">5 MIN AGO</span>
+                        <Link to={`/profile/${user.username}`}>
+                            <img
+                                className="postProfileImg"
+                                src={user.profilepicture || noavatar}
+                                alt="img"
+                            />
+                        </Link>
+                        <span className="postUsername">{user.username}</span>
+                        <span className="postDate">
+                            {format(post.createdAt)}
+                        </span>
                     </div>
                     <div className="postTopRight"></div>
                 </div>
                 <div className="postCenter">
-                    <span className="postText">POW COUPLE</span>
-                    <img className="postImg" src={Becks} alt="img"></img>
+                    <span className="postText">{post?.description}</span>
+                    <img className="postImg" src={post.img} alt=""></img>
                 </div>
                 <div className="postBottom"></div>
             </div>
         </div>
     );
 };
+export default Post;

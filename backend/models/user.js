@@ -26,5 +26,17 @@ const UserSchema = new mongoose.Schema({
         type: String,
         max: 100,
     },
+    followers: {
+        type: Array,
+        default: [],
+    },
+    followings: {
+        type: Array,
+        default: [],
+    },
+    profilePicture: {
+        type: String,
+        default: '',
+    },
 });
 module.exports = mongoose.model('User', UserSchema);
