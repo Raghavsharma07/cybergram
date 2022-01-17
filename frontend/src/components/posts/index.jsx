@@ -6,13 +6,16 @@ import noavatar from '../../assets/people/noavatar.jpg';
 import { format } from 'timeago.js';
 import { Link } from 'react-router-dom';
 const Post = ({ post }) => {
+    const PF = process.env.REACT_APP_PUBLIC_FOLDER;
+
     const [user, setUser] = useState({});
+
     useEffect(() => {
         const fetchUser = async () => {
-            const response = await axios.get(
+            const res = await axios.get(
                 `http://localhost:8800/api/users?userId=${post.userId}`
             );
-            setUser(response.data);
+            setUser(res.data);
         };
         fetchUser();
     }, [post.userId]);
@@ -37,7 +40,7 @@ const Post = ({ post }) => {
                 </div>
                 <div className="postCenter">
                     <span className="postText">{post?.description}</span>
-                    <img className="postImg" src={post.img} alt=""></img>
+                    <img className="postImg" src={PF + post.img} alt=""></img>
                 </div>
                 <div className="postBottom"></div>
             </div>

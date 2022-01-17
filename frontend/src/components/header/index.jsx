@@ -14,18 +14,19 @@ export const LoginHeader = () => {
                 <div className="navbarCenter">
                     <div className="searchbar">
                         <input
-                            placeholder="Search for Reports"
+                            placeholder="Search for Reports, Users"
                             className="searchInput"
                         />
                     </div>
                 </div>
                 <div className="navbarRight">
                     <ul className="navbarRightClick">
-                        <li className="navbarRightAbout">About</li>
-                    </ul>
-
-                    <ul className="navbarRightClick">
-                        <li className="navbarRightLogout">Logout</li>
+                        <Link
+                            to="/"
+                            style={{ textDecoration: 'none', color: 'white' }}
+                        >
+                            <li className="navbarRightLogout">Logout</li>
+                        </Link>
                     </ul>
                 </div>
             </div>

@@ -20,6 +20,7 @@ router.post('/register', async (request, response) => {
         response.status(200).json(user);
     } catch (error) {
         response.status(500).json(error);
+        console.log('USER ALREADY EXISTS');
     }
 });
 

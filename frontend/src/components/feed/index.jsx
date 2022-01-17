@@ -1,11 +1,14 @@
 import React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { Share } from '../shared';
 import Post from '../posts';
 import axios from 'axios';
+
+import { AuthContext } from '../../context/AuthContext';
 import './index.css';
 export const Feed = ({ username }) => {
     const [posts, setPosts] = useState([]);
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         const fetchPosts = async () => {
@@ -14,12 +17,16 @@ export const Feed = ({ username }) => {
                       'http://localhost:8800/api/posts/profile/' + username
                   )
                 : await axios.get(
-                      'http://localhost:8800/api/posts/timeline/61d5cc3e480b50537e771c79'
+                      'http://localhost:8800/api/posts/timeline/' + user._id
                   );
-            setPosts(response.data);
+            setPosts(
+                response.data.sort((p1, p2) => {
+                    return new Date(p2.createdAt) - new Date(p1.createdAt);
+                })
+            );
         };
         fetchPosts();
-    }, []);
+    }, [username, user._id]);
 
     return (
         <div className="feed">

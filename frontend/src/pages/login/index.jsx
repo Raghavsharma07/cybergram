@@ -21,7 +21,7 @@ export const Login = () => {
             <div className="loginWrapper">
                 <div className="loginRight">
                     <h3 className="loginLogo">CYBERGRAM</h3>
-                    <form className="loginBox" onClick={clickHandler}>
+                    <form className="loginBox" onSubmit={clickHandler}>
                         <input
                             type="email"
                             placeholder="Email"

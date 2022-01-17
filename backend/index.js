@@ -1,28 +1,60 @@
 const express = require('express');
 const app = express();
-const cors = require('cors');
 const mongoose = require('mongoose');
-const postRoute = require('./routes/posts');
 const dotenv = require('dotenv');
 const helmet = require('helmet');
-const userRoute = require('../backend/routes/users');
 const morgan = require('morgan');
-const authRoute = require('../backend/routes/auth');
+const cors = require('cors');
+const userRoute = require('./routes/users');
+const authRoute = require('./routes/auth');
+const postRoute = require('./routes/posts');
+const multer = require('multer');
+const path = require('path');
+dotenv.config();
+
+mongoose
+    .connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    })
+    .then(() => console.log('DB Connection Successfull'))
+    .catch((err) => {
+        console.error(err);
+    });
+
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
+// MIDDLEWARE
+
 app.use(express.json());
 app.use(helmet());
-app.use(cors());
 app.use(morgan('common'));
-app.use('/api/auth', authRoute);
-app.use('/api/users', userRoute);
-app.use('/api/posts', postRoute);
+app.use(cors());
 
-dotenv.config();
-mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true }, () => {
-    console.log('jkn');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/images');
+    },
+    filename: (req, file, cb) => {
+        cb(null, req.body.name);
+    },
 });
 
-const Port = 8800;
+const upload = multer({ storage: storage });
+app.post('/api/upload', upload.single('file'), (req, res) => {
+    try {
+        return res.status(200).json('File uploaded successfully');
+    } catch (err) {
+        console.log(err);
+    }
+});
 
-app.listen(Port, () => {
-    console.log('less go');
+app.use('/api/users', userRoute);
+app.use('/api/auth', authRoute);
+app.use('/api/posts', postRoute);
+
+const PORT = 8800;
+
+app.listen(PORT, () => {
+    console.log('Running on server');
 });
